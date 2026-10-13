@@ -1,0 +1,57 @@
+
+/* 10/23 專屬：承接 11/07 色彩版面，優先強化醫師信任與行動訊息 */
+:root{--green:#164633;--green-d:#133b2e;--gold:#a78347;--paper:#fbfaf5;--paper2:#f5f3e9}
+body{overflow-x:hidden}
+.hero.hero-clean{background:linear-gradient(115deg,#f8f8f1,#edf3e8);color:#233a30}
+.hero-clean .hero-portrait{background:transparent;max-width:380px;box-shadow:none;border:0;transform:none;padding:0}
+.hero-clean .doctor-photo-main{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%;border-radius:180px 180px 24px 24px;border:8px solid #fff;box-shadow:0 20px 42px #1d432223}
+.hero-clean .hero-portrait figcaption{font-size:13px;color:#345c49;line-height:1.65}
+.hero-clean .hero-copy-clean h1{font-weight:700;letter-spacing:0;line-height:1.42}
+.hero-clean .hero-copy-clean h1 em{color:#a47b36}
+.doctor-credential{display:inline-block;padding:7px 12px;border-left:3px solid #b69556;background:#fff8e8;color:#355547;font-size:13px;line-height:1.6;font-weight:700;margin:0 0 20px}
+.hero-clean .cta-clean,.takeaway-action .cta-clean{background:#16583e;color:white;display:inline-flex;align-items:center;justify-content:center;padding:14px 28px;border-radius:6px;font-weight:700;text-decoration:none;min-height:52px}
+.hero-clean .cta-clean:hover,.takeaway-action .cta-clean:hover{background:#22704f}
+.hero-clean .hero-meta-clean{margin-bottom:20px}
+.hero-clean .hero-meta-clean b,.hero-clean .hero-meta-clean small{color:#234636}
+.hero-clean .hero-micro{color:#4d6b59}
+.benefits .benefit-card{background:#fffdf9}
+.speaker-side{width:185px;max-height:225px;object-fit:cover;object-position:50% 10%;border-radius:12px;margin-top:10px;box-shadow:0 10px 24px #1f38251b}
+.draft-disclaimer{font-size:12px;color:#748177;margin-top:24px}
+.takeaway-action{text-align:center;margin-top:28px}
+.art-speaker-mini{display:flex;align-items:center;gap:18px}
+.art-speaker-mini img{width:120px;height:155px;object-fit:cover;border-radius:70px 70px 12px 12px;flex-shrink:0;border:4px solid #fff}
+.art-speaker-mini p{color:inherit!important;font-size:15px!important}
+.art-note .art-speaker-mini .art-note-small{font-size:12px!important}
+.form-card form[hidden],#successState[hidden],#formFallback[hidden],#loadingState[hidden]{display:none!important}
+.form-card .form-field{display:block;margin:0 0 16px}
+.form-card .form-field label,.form-card .form-label{display:block;color:#214734;font-weight:700;font-size:14px;margin:0 0 5px}
+.form-card .form-field input,.form-card .form-field select,.form-card .form-field textarea{display:block;width:100%;border:1px solid #c6d4c6;padding:12px 13px;font:inherit;color:#243e32;border-radius:7px;min-height:48px;background:#fff}
+.form-card .form-field textarea{min-height:72px}
+.form-card .form-field input:focus,.form-card .form-field select:focus{outline:2px solid #8bbba0;outline-offset:1px}
+.form-card .required{color:#a04126}
+.form-card .helper{font-size:12px;color:#66786a;margin:0 0 20px}
+.form-card .submit-button{width:100%;min-height:52px;border:0;border-radius:5px;background:#185a3e;color:#fff;font-size:16px;cursor:pointer;text-align:center}
+.form-card .submit-button:disabled{opacity:.7;cursor:wait}
+.form-card .reg-consent{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#506453;line-height:1.6;margin:14px 0}
+.form-card .reg-consent input{width:22px;height:22px;flex-shrink:0;accent-color:#185a3e}
+.form-card .status{color:#9b392f;font-size:14px;line-height:1.65;margin:10px 0}
+.form-card .status:empty{display:none}
+.form-card .success-state{text-align:center;padding:22px 5px}
+.form-card .success-icon{font-size:48px;color:#1b7751}
+.form-card .success-state h3{margin:8px 0;color:#17583b}
+.form-card #formFallback h3{font-size:23px}
+.form-card #loadingState{font-size:14px;color:#5c6b60}
+.reg-contact{font-size:14px}
+.reg-contact a{color:white}
+.foot small{display:block}
+.when-date{line-height:1.3}
+@media(max-width:859px){
+ .hero-clean .hero-portrait{order:0!important;width:min(65%,270px)!important;margin:10px auto 0}
+ .hero-clean .doctor-photo-main{border-width:5px}
+ .hero-clean .hero-copy-clean h1{font-size:clamp(31px,8vw,42px)!important}
+ .art-speaker-mini{align-items:flex-start}
+ .art-speaker-mini img{width:88px;height:110px}
+ .doctor-credential{font-size:12px}
+ .speaker-side{display:none}
+ .hero-clean .hero-sub-clean{font-size:15px}
+}
