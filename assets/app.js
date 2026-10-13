@@ -8,7 +8,7 @@ const loading=document.getElementById("loadingState"),fallback=document.getEleme
   oldLink=document.getElementById("oldRegistrationLink");
 if(!form)return;
 const key="1023-github-v1-";
-function uuid(){return crypto?.randomUUID?.()||"v-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2)}
+function uuid(){return (typeof crypto!=="undefined"&&typeof crypto.randomUUID==="function")?crypto.randomUUID():"v-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2)}
 function store(storage,k){try{let v=storage.getItem(key+k);if(!v){v=uuid();storage.setItem(key+k,v)}return v}catch(e){return uuid()}}
 const visitor=store(localStorage,"visitor"),session=store(sessionStorage,"session");
 const p=new URLSearchParams(location.search);
@@ -17,7 +17,7 @@ const trackKeys=["utm_source","utm_medium","utm_campaign","utm_content","utm_ter
 for(const k of trackKeys){if(p.has(k))stored[k]=(p.get(k)||"").slice(0,250)}
 try{localStorage.setItem(key+"attribution",JSON.stringify(stored))}catch(e){}
 const tracking=()=>({visitor_id:visitor,session_id:session,page_url:location.href.slice(0,1000),referrer:document.referrer.slice(0,1000),device:/Mobi|Android|iPhone/i.test(navigator.userAgent)?"mobile":"desktop",...stored});
-function pixel(name,extra){try{if(typeof fbq==="function")fbq("track",name,extra||{})}catch(e){}}
+function pixel(name,extra,options){try{if(typeof fbq==="function")fbq("track",name,extra||{},options||{})}catch(e){}}
 (function initPixel(){const id=String(cfg.META_PIXEL_ID||"");if(!/^\d{5,25}$/.test(id))return;
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=true;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=true;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
 fbq("init",id);fbq("track","PageView");})();
@@ -102,7 +102,7 @@ form.addEventListener("submit",async e=>{
   await post("registration",{requestId:rid,answers,tracking:tracking()});
   if(!(await checkSuccess(rid)))throw Error("已送出資料，但目前無法確認結果。請先不要重複報名，請聯絡郭小姐 0953-056201 查詢。");
   try{sessionStorage.removeItem(pendingKey)}catch(e){}
-  pixel("CompleteRegistration",{content_name:"2026-10-23-tea",event_id:rid});
+  pixel("CompleteRegistration",{content_name:"2026-10-23-tea"},{eventID:rid});
   form.hidden=true;success.hidden=false;success.scrollIntoView({behavior:"smooth",block:"center"});
  }catch(e){setError(e.message||"無法確認報名結果，請先聯絡主辦單位。")}
  finally{send.disabled=false;send.textContent="確認報名 →"}
