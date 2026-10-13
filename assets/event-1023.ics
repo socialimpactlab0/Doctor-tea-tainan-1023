@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//SocialImpactLab//Doctor Tea Tainan 1023//ZH-TW
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:20261023-doctor-tea-tainan@socialimpactlab0.github.io
+DTSTAMP:20261013T101000Z
+DTSTART:20261023T063000Z
+DTEND:20261023T083000Z
+SUMMARY:10/23 袁倫祥醫師公益茶席講座
+DESCRIPTION:袁倫祥醫師分享免疫力與日常健康；李羽綾講師分享神韻藝術文化。免費參加，請事先預約。14:00 開始入場。
+LOCATION:府城滿福婚宴會館三樓，台南市永康區中正北路403號
+URL:https://socialimpactlab0.github.io/Doctor-tea-tainan-1023/
+END:VEVENT
+END:VCALENDAR
