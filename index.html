@@ -30,7 +30,7 @@
   --r:6px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:auto;-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 body{font-family:var(--sans);font-size:18px;line-height:1.8;color:var(--ink);background:var(--paper);
   background-image:radial-gradient(rgba(29,37,32,.035) 1px,transparent 1px);background-size:4px 4px}
@@ -252,6 +252,14 @@ details p{padding:0 0 22px;color:var(--ink-2)}
   .ledger div:nth-child(3){border-left:0}
   .ledger div:nth-child(n+3){border-top:1px solid rgba(255,255,255,.16)}
   .q-head,.faq-grid,.reg-grid,.venue-grid,.band-grid{grid-template-columns:1fr}
+  /* FB 手機內建瀏覽器：點報名就能直接看到表單，不用先滑過操作說明 */
+  .reg{padding:16px 0 38px}
+  .reg-grid{gap:18px}
+  .reg-grid .form-card{order:-1}
+  .reg-grid .reg-side{order:1}
+  .reg-side .steps{display:none}
+  .reg-side .lead{font-size:15px}
+  .reg-side .privacy{margin-top:12px}
   .q-head{gap:14px}
   .q-item{grid-template-columns:56px 1fr;gap:6px 16px;padding:24px 0}
   .q-item .n{font-size:40px;grid-row:span 2}
@@ -263,10 +271,12 @@ details p{padding:0 0 22px;color:var(--ink-2)}
     background:rgba(247,243,234,.96);border-top:1px solid var(--hair);transition:transform .25s}
   .sticky.hide{transform:translateY(110%)}
   .sticky .btn{width:100%;min-height:54px}
+  .form-card{padding:22px 18px}
 }
 @media (max-width:560px){
   .brand{font-size:17px;letter-spacing:.1em}
-  .topnav .btn{display:none}
+  .topnav .btn{display:inline-flex;min-height:40px;padding:7px 12px;font-size:14px}
+  .topnav .tel{display:none}
   .sp{grid-template-columns:1fr}
   .sp img{height:300px;min-height:0}
   .facts dd{font-size:17px}
@@ -323,6 +333,49 @@ details p{padding:0 0 22px;color:var(--ink-2)}
       </div>
       <div class="seal" aria-hidden="true"><span>免費<small>入場</small></span></div>
     </figure>
+  </div>
+</section>
+
+<!-- 讓手機訪客在首頁主視覺之後即可填寫表單，避免長距離捲動 -->
+<!-- REGISTRATION (IDs kept for assets/app.js) -->
+<section class="reg" id="registration" aria-labelledby="reg-title">
+  <div class="wrap reg-grid">
+    <div class="reg-side">
+      <p class="eyebrow">免費席位預約｜直接在本站完成</p>
+      <h2 id="reg-title">為自己和家人，<br>保留一個位子。</h2>
+      <p class="lead">活動免費，但為了準備茶席與座位，請先預約。</p>
+      <ol class="steps">
+        <li><div><b>填寫姓名、手機與人數</b><small>職業、備註都是選填，約 1 分鐘完成</small></div></li>
+        <li><div><b>送出後看到「報名完成」</b><small>代表我們已收到，席位已為您保留</small></div></li>
+        <li><div><b>10/23 下午 14:00 後入場</b><small>現場報上姓名或手機即可</small></div></li>
+      </ol>
+      <p class="privacy">您的資料只用於本次活動的報名與聯絡。如需更正或取消，請來電郭小姐 0953-056201。</p>
+    </div>
+    <div class="form-card">
+      <div id="loadingState" role="status">正在載入報名欄位，無須跳轉其他網站…</div>
+      <div id="formFallback" hidden>
+        <h3>報名表暫時無法載入</h3>
+        <p id="fallbackReason">請點下方「重新載入報名表」，無須離開目前頁面。</p>
+        <button class="btn submit-button" type="button" id="retryRegistrationButton">重新載入報名表 ↻</button>
+        <p class="form-alt">若持續無法載入，也可以電話預約：<a href="tel:0953056201">郭小姐 0953-056201</a></p>
+      </div>
+      <form id="registrationForm" novalidate hidden>
+        <h3>10/23 免費茶席｜直接報名</h3>
+        <p class="sub">標示 <span class="required">*</span> 為必填・每筆最多 2 位</p>
+        <div id="formFields"></div>
+        <label class="reg-consent"><input type="checkbox" name="consent" required> <span>我同意主辦單位將資料用於本次活動聯絡及報名管理。</span></label>
+        <button type="submit" id="submitButton" class="btn submit-button"><span class="button-text">確認報名 →</span></button>
+        <p id="formStatus" class="status" role="status" aria-live="polite"></p>
+        <p class="form-alt">不方便上網填寫？直接來電：<a href="tel:0953056201">郭小姐 0953-056201</a></p>
+      </form>
+      <div id="successState" class="success-state" hidden>
+        <div class="success-icon" aria-hidden="true">✓</div>
+        <h3>報名完成，席位已為您保留！</h3>
+        <p>10月23日（五）14:00 開放入場<br>府城滿福婚宴會館 三樓，期待與您見面。</p>
+        <a class="btn btn-primary" href="assets/event-1023.ics" download="1023-公益健康茶席.ics">加入行事曆</a>
+        <a class="btn btn-ghost" href="#top">回到活動介紹</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -433,48 +486,6 @@ details p{padding:0 0 22px;color:var(--ink-2)}
   </div>
 </section>
 
-<!-- REGISTRATION (IDs kept for assets/app.js) -->
-<section class="reg" id="registration" aria-labelledby="reg-title">
-  <div class="wrap reg-grid">
-    <div class="reg-side">
-      <p class="eyebrow">免費席位預約</p>
-      <h2 id="reg-title">為自己和家人，<br>保留一個位子。</h2>
-      <p class="lead">活動免費，但為了準備茶席與座位，請先預約。</p>
-      <ol class="steps">
-        <li><div><b>填寫姓名、手機與人數</b><small>職業、備註都是選填，約 1 分鐘完成</small></div></li>
-        <li><div><b>送出後看到「報名完成」</b><small>代表我們已收到，席位已為您保留</small></div></li>
-        <li><div><b>10/23 下午 14:00 後入場</b><small>現場報上姓名或手機即可</small></div></li>
-      </ol>
-      <p class="privacy">您的資料只用於本次活動的報名與聯絡。如需更正或取消，請來電郭小姐 0953-056201。</p>
-    </div>
-    <div class="form-card">
-      <div id="loadingState" role="status">報名表載入中，請稍候…</div>
-      <div id="formFallback" hidden>
-        <h3>請改用以下方式報名</h3>
-        <p id="fallbackReason">報名表暫時無法顯示。</p>
-        <a class="btn submit-button" id="oldRegistrationLink" href="https://script.google.com/macros/s/AKfycbyj9NAmfVlQx8zB1gV7HPF6TxIa4E_lVFl-pxb76DE4cRXfzH0jD1QyFAk0OcladDusdA/exec">前往報名頁 →</a>
-        <p class="form-alt">或直接來電報名：<a href="tel:0953056201">郭小姐 0953-056201</a></p>
-      </div>
-      <form id="registrationForm" novalidate hidden>
-        <h3>填寫報名資料</h3>
-        <p class="sub">標示 <span class="required">*</span> 為必填・每筆最多 2 位</p>
-        <div id="formFields"></div>
-        <label class="reg-consent"><input type="checkbox" name="consent" required> <span>我同意主辦單位將資料用於本次活動聯絡及報名管理。</span></label>
-        <button type="submit" id="submitButton" class="btn submit-button"><span class="button-text">確認報名 →</span></button>
-        <p id="formStatus" class="status" role="status" aria-live="polite"></p>
-        <p class="form-alt">不方便上網填寫？直接來電：<a href="tel:0953056201">郭小姐 0953-056201</a></p>
-      </form>
-      <div id="successState" class="success-state" hidden>
-        <div class="success-icon" aria-hidden="true">✓</div>
-        <h3>報名完成，席位已為您保留！</h3>
-        <p>10月23日（五）14:00 開放入場<br>府城滿福婚宴會館 三樓，期待與您見面。</p>
-        <a class="btn btn-primary" href="assets/event-1023.ics" download="1023-公益健康茶席.ics">加入行事曆</a>
-        <a class="btn btn-ghost" href="#top">回到活動介紹</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section class="faq" aria-labelledby="faq-title">
   <div class="wrap faq-grid">
@@ -508,6 +519,6 @@ var io=new IntersectionObserver(function(es){es.forEach(function(e){seen[e.targe
 io.observe(r);if(h)io.observe(h);})();
 </script>
 <script src="config.js"></script>
-<script src="assets/app.js?v=1023-github-v2"></script>
+<script src="assets/app.js?v=1023-github-v3"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ const loading=document.getElementById("loadingState"),fallback=document.getEleme
   fallbackText=document.getElementById("fallbackReason"),form=document.getElementById("registrationForm"),
   fields=document.getElementById("formFields"),success=document.getElementById("successState"),
   status=document.getElementById("formStatus"),send=document.getElementById("submitButton"),
-  oldLink=document.getElementById("oldRegistrationLink");
+  retryButton=document.getElementById("retryRegistrationButton");
 if(!form)return;
 const key="1023-github-v1-";
 function uuid(){return (typeof crypto!=="undefined"&&typeof crypto.randomUUID==="function")?crypto.randomUUID():"v-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2)}
@@ -36,7 +36,7 @@ function jsonp(action,data,timeout=10000){
  });
 }
 function setError(msg){status.textContent=msg;status.scrollIntoView({behavior:"smooth",block:"center"})}
-function showFallback(msg){loading.hidden=true;form.hidden=true;fallback.hidden=false;fallbackText.textContent=msg||"目前改用原報名網頁。"; oldLink.href=String(cfg.ORIGINAL_REGISTRATION_URL||url)}
+function showFallback(msg){loading.hidden=true;form.hidden=true;fallback.hidden=false;fallbackText.textContent=msg||"請在目前頁面重新載入報名表，或直接來電預約。"}
 document.querySelectorAll('a[href="#registration"]').forEach(a=>a.addEventListener("click",()=>track("registration_click")));
 track("page_view");
 let schema=null,lead=false;
@@ -107,9 +107,21 @@ form.addEventListener("submit",async e=>{
  }catch(e){setError(e.message||"無法確認報名結果，請先聯絡主辦單位。")}
  finally{send.disabled=false;send.textContent="確認報名 →"}
 });
-if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(url)){showFallback("報名系統設定尚未完成。");return}
-jsonp("schema",{},12000).then(data=>{
- if(!data||!data.supported||!Array.isArray(data.items))throw Error(data?.reason||"新的報名表尚未完成啟用");
- schema=data;render(data.items);
-}).catch(err=>showFallback("目前仍使用原本報名網頁："+err.message));
+let loadingSchema=false;
+function loadSchema(){
+ if(loadingSchema)return;
+ loadingSchema=true;
+ loading.hidden=false;fallback.hidden=true;
+ if(retryButton)retryButton.disabled=true;
+ const valid=/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(url);
+ const req=valid?jsonp("schema",{},15000):Promise.reject(Error("報名系統設定尚未完成"));
+ req.then(data=>{
+  if(!data||!data.supported||!Array.isArray(data.items))throw Error(data?.reason||"報名表資料目前無法載入");
+  schema=data;render(data.items);
+ }).catch(err=>{
+  showFallback("報名表未能載入（"+String(err.message||err)+"）。請點「重新載入報名表」，無須跳至其他網站。");
+ }).finally(()=>{loadingSchema=false;if(retryButton)retryButton.disabled=false});
+}
+if(retryButton)retryButton.addEventListener("click",loadSchema);
+loadSchema();
 })();
